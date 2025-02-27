@@ -1,6 +1,9 @@
 # env python
 /main
 
+# scam env of ai
+/ai/scam
+
 # Node modules
 node_modules/
 
