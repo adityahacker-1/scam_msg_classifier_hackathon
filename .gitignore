@@ -1,1 +1,38 @@
-./main
+# env python
+/main
+
+# Node modules
+node_modules/
+
+# Build output
+/dist/
+/.vite/
+
+# Dependency directories
+/.pnp/
+/.pnp.js
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# VSCode settings
+.vscode/
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# MacOS specific files
+.DS_Store
+
+# Windows specific files
+Thumbs.db
+
+# IDEs and editors specific files
+.idea/
+
+# Optional: If you're using TypeScript, you might also want to ignore the build artifacts
+*.tsbuildinfo
