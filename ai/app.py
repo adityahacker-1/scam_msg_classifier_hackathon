@@ -1,18 +1,21 @@
-import streamlit as st 
 import pickle
 import nltk
 import string
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
+from flask import Flask, request, jsonify
 
 ps = PorterStemmer()
 
-# main file which host the website and process the data.
+# Load pre-trained vectorizer and model
+tfidf = pickle.load(open('vetorizer.pkl', 'rb'))
+model = pickle.load(open("model.pkl", 'rb'))
+
+app = Flask(__name__)
 
 def transform_text(text):
     text = text.lower()
     text = text.split()
-
     y = []
     for i in text:
         if i.isalnum():
@@ -30,30 +33,26 @@ def transform_text(text):
 
     for i in text:
         y.append(ps.stem(i))
-            
+
     return " ".join(y)
 
-
-tfidf = pickle.load(open('vetorizer.pkl', 'rb'))
-model = pickle.load(open("model.pkl", 'rb'))
-
-st.title("SMS Spam classifier")
-input_sms = st.text_area("Enter the message")
-
-if st.button("Predict"):
-
-    # preprocess
+@app.route('/predict', methods=['POST'])
+def predict():
+    data = request.get_json()  # Get the data sent by the React frontend
+    input_sms = data['sms']
+    
+    # Preprocess and vectorize the input
     transformed_sms = transform_text(input_sms)
-
-    # vectorize
     vector_input = tfidf.transform([transformed_sms])
-
-    # predict
+    
+    # Predict using the model
     result = model.predict(vector_input)[0]
-
-    # display
+    
+    # Return the result as JSON
     if result == 1:
-        st.header("Spam")
-        
+        return jsonify({'prediction': 'Spam'})
     else:
-        st.header("Not spam")
+        return jsonify({'prediction': 'Not spam'})
+
+if __name__ == '__main__':
+    app.run(debug=True)
