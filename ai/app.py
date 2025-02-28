@@ -8,20 +8,16 @@ from openai import OpenAI
 
 ps = PorterStemmer()
 
-# removed api_key
-api_key= "" # add api_key here
+api_key= "" # add the secret api_key here and all good
 
-# Load pre-trained vectorizer and model for SMS Spam Classification
 tfidf = pickle.load(open('vetorizer.pkl', 'rb'))
 model = pickle.load(open("model.pkl", 'rb'))
 
 app = Flask(__name__)
 CORS(app)
 
-# Chat history to store conversation with the bot
 chatStr = ""
 
-# Text transformation for spam classification
 def transform_text(text):
     text = text.lower()
     text = text.split()
@@ -45,35 +41,28 @@ def transform_text(text):
 
     return " ".join(y)
 
-# Route for SMS Spam Classification
 @app.route('/predict', methods=['POST'])
 def predict():
-    data = request.get_json()  # Get the data sent by the React frontend
+    data = request.get_json()
     input_sms = data['sms']
     
-    # Preprocess and vectorize the input
     transformed_sms = transform_text(input_sms)
     vector_input = tfidf.transform([transformed_sms])
     
-    # Predict using the model
     result = model.predict(vector_input)[0]
     
-    # Return the result as JSON
     if result == 1:
         return jsonify({'prediction': 'Spam'})
     else:
         return jsonify({'prediction': 'Not spam'})
 
-# Chatbot function using OpenAI's GPT model
 def chat(query):
     global chatStr
     
-    # Append the user's message to the chat history
     chatStr += f"User: {query}\nBot: "
     client = OpenAI(api_key=api_key)
     
     try:
-        # Request OpenAI GPT chat completion
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
@@ -86,24 +75,19 @@ def chat(query):
             presence_penalty=0
         )
     
-        # todo: wrap this in a try-catch block
         chatStr += f"{response.choices[0].message.content} \n"
         
-        # Return the bot's response
         return response.choices[0].message.content
     except Exception as e:
         return str(e)
 
-# Route for Chatbot interaction
 @app.route('/chat', methods=['POST'])
 def handle_chat():
-    data = request.get_json()  # Get the data sent by the React frontend
-    user_query = data.get("query", "")  # Get the user's query
+    data = request.get_json()
+    user_query = data.get("query", "")
 
-    # Get the chatbot's response
     response = chat(user_query)
 
-    # Return the bot's response as JSON
     return jsonify({"response": response})
 
 if __name__ == '__main__':

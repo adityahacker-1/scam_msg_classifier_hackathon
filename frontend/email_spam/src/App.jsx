@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./App.css"; // Import the CSS file
+import "./App.css";
 
 function App() {
-  const [inputText, setInputText] = useState(""); // For SMS Spam Classifier input
+  const [inputText, setInputText] = useState("");
   const [prediction, setPrediction] = useState("");
   const [messages, setMessages] = useState([
     { text: "Hello! Do you have some questions related to security?", sender: "bot" },
   ]);
-  const [chatbotInput, setChatbotInput] = useState(""); // For Chatbot input
+  const [chatbotInput, setChatbotInput] = useState("");
 
-  // Handle SMS Spam Classifier submission
   const handleSubmitSMS = async () => {
-    if (inputText.trim() === "") return; // Don't send empty messages
+    if (inputText.trim() === "") return;
 
     try {
       const response = await axios.post("http://127.0.0.1:5000/predict", {
@@ -24,9 +23,8 @@ function App() {
     }
   };
 
-  // Handle Chatbot message submission
   const handleSubmitChatbot = async () => {
-    if (chatbotInput.trim() === "") return; // Don't send empty messages
+    if (chatbotInput.trim() === "") return;
 
     setMessages((prevMessages) => [...prevMessages, { text: chatbotInput, sender: "user" }]);
 
@@ -40,23 +38,20 @@ function App() {
       console.error("Error fetching chatbot response:", error);
     }
 
-    setChatbotInput(""); // Clear input
+    setChatbotInput("");
   };
 
-  // Handle Enter key press to trigger button click
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      e.preventDefault(); // Prevent line break
+      e.preventDefault();
       handleSubmitChatbot();
     }
   };
 
   return (
     <div className="App">
-      {/* 🔹 Small Name on the Top Left Corner */}
       <div className="name-tag">ADEA</div>
 
-      {/* SMS Spam Classifier */}
       <div className="sms-section">
         <h2>SMS Spam Classifier</h2>
         <textarea
@@ -69,7 +64,6 @@ function App() {
         {prediction && <h3>{prediction}</h3>}
       </div>
 
-      {/* Chatbot */}
       <div className="chatbot">
         <div className="chat-header">Ask Us Questions on Cybersecurity</div>
         <div className="chat-messages">
