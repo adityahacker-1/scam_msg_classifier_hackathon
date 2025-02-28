@@ -6,7 +6,7 @@ function App() {
   const [inputText, setInputText] = useState(""); // For SMS Spam Classifier input
   const [prediction, setPrediction] = useState("");
   const [messages, setMessages] = useState([
-    { text: "Hello! How can I help you today?", sender: "bot" },
+    { text: "Hello! Do you have some questions related with security?", sender: "bot" },
   ]);
   const [chatbotInput, setChatbotInput] = useState(""); // For Chatbot input
 
@@ -44,6 +44,14 @@ function App() {
     setChatbotInput(""); // Clear the chatbot input field
   };
 
+  // Handle Enter key press to trigger button click
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent default Enter key behavior (line break in textarea)
+      handleSubmitChatbot(); // Trigger the chatbot submit
+    }
+  };
+
   return (
     <div className="App">
       {/* SMS Spam Classifier */}
@@ -54,14 +62,14 @@ function App() {
           onChange={(e) => setInputText(e.target.value)}
           placeholder="Enter your message here"
         />
-        <button onClick={handleSubmitSMS}>Predict</button>
+        <button onClick={handleSubmitSMS} >Predict</button>
 
         {prediction && <h2>{prediction}</h2>}
       </div>
 
       {/* Chatbot */}
       <div className="chatbot">
-        <div className="chat-header">Chat with us!</div>
+        <div className="chat-header">Ask Us Questions on Cybersecurity</div>
         <div className="chat-messages">
           {messages.map((msg, index) => (
             <div
@@ -76,6 +84,7 @@ function App() {
           <textarea
             value={chatbotInput}
             onChange={(e) => setChatbotInput(e.target.value)}
+            onKeyDown={handleKeyDown} // Add the event listener for Enter key press
             placeholder="Type your message..."
           ></textarea>
           <button onClick={handleSubmitChatbot}>Send</button>
