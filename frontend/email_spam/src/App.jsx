@@ -21,7 +21,7 @@ function App() {
     setPrediction(response.data.prediction);
   };
 
-  // Handle Chatbot message submission
+  // Handle Chatbot message submission.
   const handleSubmitChatbot = async () => {
     if (chatbotInput.trim() === "") return; // Don't send empty messages
 
