@@ -5,10 +5,10 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import openai
+from openai import OpenAI
 
-# Initialize OpenAI API key
-openai.api_key = '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'  
+# # Initialize OpenAI API key
+# openai.api_key = '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'  
 
 ps = PorterStemmer()
 
@@ -71,24 +71,28 @@ def chat(query):
     
     # Append the user's message to the chat history
     chatStr += f"User: {query}\nBot: "
+    client = OpenAI(api_key='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')
+    
     
     try:
         # Request OpenAI GPT chat completion
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[{"role": "user", "content": chatStr}],
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "user", "content": chatStr}
+            ],
             temperature=1,
-            max_tokens=150,
+            max_tokens=1576,
             top_p=1,
             frequency_penalty=0,
             presence_penalty=0
         )
-        
-        # Append the bot's response to the chat history
-        chatStr += f"{response.choices[0].message['content']} \n"
+    
+        # todo: wrap this in a try-catch block
+        chatStr += f"{response.choices[0].message.content} \n"
         
         # Return the bot's response
-        return response.choices[0].message['content']
+        return response.choices[0].message.content
     except Exception as e:
         return str(e)
 
