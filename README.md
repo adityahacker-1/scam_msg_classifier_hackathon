@@ -70,7 +70,7 @@ This project combines **Python (Flask, Scikit-Learn, NLTK)** for machine learnin
 ### Frontend Setup (React Vite)
 1. Navigate to the frontend directory:
    ```sh
-   cd frontend
+   cd frontend/email_spam
    ```
 2. Install dependencies:
    ```sh
