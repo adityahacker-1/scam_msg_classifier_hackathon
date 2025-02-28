@@ -3,12 +3,12 @@ import axios from "axios";
 import "./App.css"; // Import the CSS file
 
 function App() {
-  const [inputText, setInputText] = useState(""); // SMS Spam Classifier input
+  const [inputText, setInputText] = useState(""); // For SMS Spam Classifier input
   const [prediction, setPrediction] = useState("");
   const [messages, setMessages] = useState([
     { text: "Hello! How can I help you today?", sender: "bot" },
   ]);
-  const [chatbotInput, setChatbotInput] = useState(""); // Chatbot input
+  const [chatbotInput, setChatbotInput] = useState(""); // For Chatbot input
 
   // Handle SMS Spam Classifier submission
   const handleSubmitSMS = async () => {
@@ -31,15 +31,15 @@ function App() {
       { text: chatbotInput, sender: "user" },
     ]);
 
-    // Make an API call to the backend for processing the chatbot message
-    const response = await axios.post("http://127.0.0.1:5000/predict", {
-      sms: chatbotInput,
+    // Make an API call to the backend for chatbot response
+    const response = await axios.post("http://127.0.0.1:5000/chat", {
+      query: chatbotInput,
     });
 
     // Add bot's response to the chat
     setMessages((prevMessages) => [
       ...prevMessages,
-      { text: response.data.prediction, sender: "bot" },
+      { text: response.data.response, sender: "bot" },
     ]);
     setChatbotInput(""); // Clear the chatbot input field
   };
