@@ -3,24 +3,37 @@ import axios from "axios";
 import "./App.css"; // Import the CSS file
 
 function App() {
-  const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = useState(""); // SMS Spam Classifier input
   const [prediction, setPrediction] = useState("");
   const [messages, setMessages] = useState([
     { text: "Hello! How can I help you today?", sender: "bot" },
   ]);
+  const [chatbotInput, setChatbotInput] = useState(""); // Chatbot input
 
-  const handleSubmit = async () => {
+  // Handle SMS Spam Classifier submission
+  const handleSubmitSMS = async () => {
     if (inputText.trim() === "") return; // Don't send empty messages
+
+    // Send the SMS text for classification
+    const response = await axios.post("http://127.0.0.1:5000/predict", {
+      sms: inputText,
+    });
+    setPrediction(response.data.prediction);
+  };
+
+  // Handle Chatbot message submission
+  const handleSubmitChatbot = async () => {
+    if (chatbotInput.trim() === "") return; // Don't send empty messages
 
     // Add user message to the chat
     setMessages((prevMessages) => [
       ...prevMessages,
-      { text: inputText, sender: "user" },
+      { text: chatbotInput, sender: "user" },
     ]);
 
-    // Make an API call to the backend for processing the user's message
+    // Make an API call to the backend for processing the chatbot message
     const response = await axios.post("http://127.0.0.1:5000/predict", {
-      sms: inputText,
+      sms: chatbotInput,
     });
 
     // Add bot's response to the chat
@@ -28,20 +41,23 @@ function App() {
       ...prevMessages,
       { text: response.data.prediction, sender: "bot" },
     ]);
-    setInputText(""); // Clear the input field
+    setChatbotInput(""); // Clear the chatbot input field
   };
 
   return (
     <div className="App">
-      <h1>SMS Spam Classifier</h1>
-      <textarea
-        value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
-        placeholder="Enter your message here"
-      />
-      <button onClick={handleSubmit}>Predict</button>
+      {/* SMS Spam Classifier */}
+      <div className="sms-section">
+        <h1>SMS Spam Classifier</h1>
+        <textarea
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          placeholder="Enter your message here"
+        />
+        <button onClick={handleSubmitSMS}>Predict</button>
 
-      {prediction && <h2>{prediction}</h2>}
+        {prediction && <h2>{prediction}</h2>}
+      </div>
 
       {/* Chatbot */}
       <div className="chatbot">
@@ -58,11 +74,11 @@ function App() {
         </div>
         <div className="chat-input">
           <textarea
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
+            value={chatbotInput}
+            onChange={(e) => setChatbotInput(e.target.value)}
             placeholder="Type your message..."
           ></textarea>
-          <button onClick={handleSubmit}>Send</button>
+          <button onClick={handleSubmitChatbot}>Send</button>
         </div>
       </div>
     </div>
