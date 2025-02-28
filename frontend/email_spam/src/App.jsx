@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+// frontend
 function App() {
   const [inputText, setInputText] = useState("");
   const [prediction, setPrediction] = useState("");
