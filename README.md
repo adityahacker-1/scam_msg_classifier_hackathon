@@ -157,3 +157,36 @@ This project combines **Python (Flask, Scikit-Learn, NLTK)** for machine learnin
 - **OpenAI API** for chatbot functionality
 - **Flask & React** for full-stack development
 
+
+---
+
+## Images to show what I did
+
+---
+
+- **Gitkraken Branches**
+![Image showing git kraken branches](images/git_kraken.png)
+
+---
+
+- **Training Dataset**
+![Training dataset](images/training_dataset.png)
+
+---
+
+- **Character Count**
+![Character Count](images/character_count.png)
+
+---
+
+- **Repeated Words**
+![Repeated words image](images/repeated_words.png)
+
+---
+
+- **Count of Repeated Words**
+![Count of repeated words](images/count_of_repeated_words.png)
+
+---
+
+
