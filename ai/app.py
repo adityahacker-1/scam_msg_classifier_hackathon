@@ -5,10 +5,9 @@ from nltk.stem.porter import PorterStemmer
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from openai import OpenAI
-import os
 
-api_key = os.getenv("OPENAI_API_KEY")
-
+# # Initialize OpenAI API key
+# openai.api_key = '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'  
 
 ps = PorterStemmer()
 
@@ -71,7 +70,7 @@ def chat(query):
     
     # Append the user's message to the chat history
     chatStr += f"User: {query}\nBot: "
-    client = OpenAI(api_key)
+    client = OpenAI(api_key='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')
     
     try:
         # Request OpenAI GPT chat completion

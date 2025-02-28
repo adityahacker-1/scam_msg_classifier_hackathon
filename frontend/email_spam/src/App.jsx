@@ -6,7 +6,7 @@ function App() {
   const [inputText, setInputText] = useState(""); // For SMS Spam Classifier input
   const [prediction, setPrediction] = useState("");
   const [messages, setMessages] = useState([
-    { text: "Hello! Do you have some questions related with security?", sender: "bot" },
+    { text: "Hello! Do you have some questions related to security?", sender: "bot" },
   ]);
   const [chatbotInput, setChatbotInput] = useState(""); // For Chatbot input
 
@@ -14,57 +14,59 @@ function App() {
   const handleSubmitSMS = async () => {
     if (inputText.trim() === "") return; // Don't send empty messages
 
-    // Send the SMS text for classification
-    const response = await axios.post("http://127.0.0.1:5000/predict", {
-      sms: inputText,
-    });
-    setPrediction(response.data.prediction);
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/predict", {
+        sms: inputText,
+      });
+      setPrediction(response.data.prediction);
+    } catch (error) {
+      console.error("Error predicting SMS:", error);
+    }
   };
 
-  // Handle Chatbot message submission.
+  // Handle Chatbot message submission
   const handleSubmitChatbot = async () => {
     if (chatbotInput.trim() === "") return; // Don't send empty messages
 
-    // Add user message to the chat
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { text: chatbotInput, sender: "user" },
-    ]);
+    setMessages((prevMessages) => [...prevMessages, { text: chatbotInput, sender: "user" }]);
 
-    // Make an API call to the backend for chatbot response
-    const response = await axios.post("http://127.0.0.1:5000/chat", {
-      query: chatbotInput,
-    });
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/chat", {
+        query: chatbotInput,
+      });
 
-    // Add bot's response to the chat
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { text: response.data.response, sender: "bot" },
-    ]);
-    setChatbotInput(""); // Clear the chatbot input field
+      setMessages((prevMessages) => [...prevMessages, { text: response.data.response, sender: "bot" }]);
+    } catch (error) {
+      console.error("Error fetching chatbot response:", error);
+    }
+
+    setChatbotInput(""); // Clear input
   };
 
   // Handle Enter key press to trigger button click
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault(); // Prevent default Enter key behavior (line break in textarea)
-      handleSubmitChatbot(); // Trigger the chatbot submit
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent line break
+      handleSubmitChatbot();
     }
   };
 
   return (
     <div className="App">
+      {/* 🔹 Small Name on the Top Left Corner */}
+      <div className="name-tag">ADEA</div>
+
       {/* SMS Spam Classifier */}
       <div className="sms-section">
-        <h1>SMS Spam Classifier</h1>
+        <h2>SMS Spam Classifier</h2>
         <textarea
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           placeholder="Enter your message here"
         />
-        <button onClick={handleSubmitSMS} >Predict</button>
+        <button onClick={handleSubmitSMS}>Predict</button>
 
-        {prediction && <h2>{prediction}</h2>}
+        {prediction && <h3>{prediction}</h3>}
       </div>
 
       {/* Chatbot */}
@@ -72,10 +74,7 @@ function App() {
         <div className="chat-header">Ask Us Questions on Cybersecurity</div>
         <div className="chat-messages">
           {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={msg.sender === "bot" ? "message bot" : "message user"}
-            >
+            <div key={index} className={msg.sender === "bot" ? "message bot" : "message user"}>
               <p>{msg.text}</p>
             </div>
           ))}
@@ -84,7 +83,7 @@ function App() {
           <textarea
             value={chatbotInput}
             onChange={(e) => setChatbotInput(e.target.value)}
-            onKeyDown={handleKeyDown} // Add the event listener for Enter key press
+            onKeyDown={handleKeyDown}
             placeholder="Type your message..."
           ></textarea>
           <button onClick={handleSubmitChatbot}>Send</button>

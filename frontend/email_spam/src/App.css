@@ -11,6 +11,7 @@
     color: white;
   }
   
+  
   /* SMS Spam Classifier Section */
   .sms-section {
     background: rgba(255, 255, 255, 0.1);
@@ -162,3 +163,30 @@
     transform: scale(1.05);
   }
   
+
+
+
+  /*added*/
+ /* 🔹 Name Tag (Top Left Corner) - Stylish & Bigger */
+.name-tag {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    font-size: 16px; /* Slightly bigger */
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #ff9900, #ff3300); /* Gradient effect */
+    padding: 8px 16px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-transform: uppercase; /* Make it stylish */
+    letter-spacing: 1px; /* Space out letters slightly */
+    font-family: 'Poppins', sans-serif;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effect */
+.name-tag:hover {
+    transform: scale(1.1); /* Slight enlargement on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
