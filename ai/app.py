@@ -8,7 +8,6 @@ from openai import OpenAI
 
 ps = PorterStemmer()
 
-api_key = "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"
 
 tfidf = pickle.load(open('vetorizer.pkl', 'rb'))
 model = pickle.load(open("model.pkl", 'rb'))
