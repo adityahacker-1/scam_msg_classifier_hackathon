@@ -41,7 +41,7 @@ This project combines **Python (Flask, Scikit-Learn, NLTK)** for machine learnin
 1. Clone the repository:
    ```sh
    git clone "https://github.com/adityahacker-1/scam_msg_classifier_hackathon.git"
-   cd ai
+   cd scam_msg_classifier_hackathon/ai
    ```
 2. Create and activate a virtual environment:
    ```sh
