@@ -4,6 +4,8 @@ import string
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from flask import Flask, request, jsonify
+from flask_cors import CORS
+
 
 ps = PorterStemmer()
 
@@ -12,6 +14,7 @@ tfidf = pickle.load(open('vetorizer.pkl', 'rb'))
 model = pickle.load(open("model.pkl", 'rb'))
 
 app = Flask(__name__)
+CORS(app)
 
 def transform_text(text):
     text = text.lower()

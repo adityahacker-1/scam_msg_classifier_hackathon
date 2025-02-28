@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./App.css"; // Import the CSS file
 
 // frontend
 function App() {
@@ -8,9 +9,8 @@ function App() {
 
   const handleSubmit = async () => {
     const response = await axios.post("http://127.0.0.1:5000/predict", {
-      sms: inputText
+      sms: inputText,
     });
-
     setPrediction(response.data.prediction);
   };
 
