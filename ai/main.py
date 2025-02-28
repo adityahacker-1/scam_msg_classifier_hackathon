@@ -7,7 +7,7 @@ from nltk.stem.porter import PorterStemmer
 
 ps = PorterStemmer()
 
-# main file which host the website and process the data
+# main file which host the website and process the data.
 
 def transform_text(text):
     text = text.lower()
