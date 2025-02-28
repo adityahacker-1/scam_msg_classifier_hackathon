@@ -8,6 +8,9 @@ from openai import OpenAI
 
 ps = PorterStemmer()
 
+# removed api_key
+api_key= "" # add api_key here
+
 # Load pre-trained vectorizer and model for SMS Spam Classification
 tfidf = pickle.load(open('vetorizer.pkl', 'rb'))
 model = pickle.load(open("model.pkl", 'rb'))
